@@ -8,10 +8,10 @@ public static class Transformations
     {
         // Zusammensetzung des Regex-Patterns
         string pattern = @"^" +
-            @"(.+?)\s+([äöüÄÖÜ\w-]+)(?=,)," +         // 1: Vorname, 2: Nachname
-            @"(\d{5})\s" +                            // 3: PLZ
-            @"([\w\s]+)\s" +                          // 4: Ort
-            @"([a-zA-Z\.\-]+)\s" +                    // 5: Straße
+            @"(.+?)\s+([ßäöüÄÖÜ\w-]+)(?=,)," +         // 1: Vorname, 2: Nachname
+            @"([-ßÄÖÜäöü\w\s]+)\s" +                          // 3: Ort
+            @"(\d{5})\s" +                            // 4: PLZ
+            @"([-äöüÄÖÜßa-zA-Z\.\-\s]+)\s" +                    // 5: Straße
             @"(\d+)," +                               // 6: Hausnummer
             @"(.+)," +                                // 7: Bestellung
             @"(.+)," +                                // 8: Mail
@@ -28,8 +28,8 @@ public static class Transformations
         {
             Vorname = match.Groups[1].Value,
             Nachname = match.Groups[2].Value,
-            PLZ = match.Groups[3].Value,
-            Ort = match.Groups[4].Value,
+            Ort = match.Groups[3].Value,
+            PLZ = match.Groups[4].Value,
             Strasse = match.Groups[5].Value,
             Hausnummer = match.Groups[6].Value,
             Bestellposten = match.Groups[7].Value,
