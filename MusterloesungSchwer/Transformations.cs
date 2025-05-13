@@ -23,7 +23,7 @@ public static class Transformations {
 
         return new Kunde { 
             Vorname = match.Groups[1].Value,
-            Name = match.Groups[2].Value,
+            Nachname = match.Groups[2].Value,
             PLZ = match.Groups[3].Value,
             Ort = match.Groups[4].Value,
             Strasse = match.Groups[5].Value,
@@ -38,7 +38,7 @@ public static class Transformations {
         public static Produkt ReturnMatchesProdukt(string eintrag) {
             // Zusammensetzung des Regex-Patterns
             string pattern = @"^" +
-                @"(.+),"                                          // 1: Name
+                @"(.+)," +                                          // 1: Name
                 @"(\d+)€," +                                      // 2: Preis
                 @"(\d+)," +                                       // 3: Bestand
                 @"(.+)," +                                        // 4: Beschreibung
@@ -50,21 +50,21 @@ public static class Transformations {
                 throw new ArgumentException("Eintrag konnte nicht geparst werden.");
             }
 
-            return new Produkt { 
+            return new Produkt {
                 Name = match.Groups[1].Value,
-                Verkaufsreis = match.Groups[2].Value,
+                Verkaufspreis = match.Groups[2].Value,
                 Bestand = match.Groups[3].Value,
                 Beschreibung = match.Groups[4].Value,
-                Artikelnummer match.Groups[5].Value
+                Artikelnummer = match.Groups[5].Value
             };
 
 
-
         }
+    }
 
         public static List<Tuple<string, string>> Bestellung(string bestellungRaw) {
             List<Tuple<string, string>> ausgabe = new List<Tuple<string, string>>();
-            string pattern = "(?<=^|,\s)([\\w-\\s]+?)\\s\\((\\d+)\\)";
+            string pattern = "(?<=^|,\\s)([\\w-\\s]+?)\\s\\((\\d+)\\)";
             
             try {
                 MatchCollection matches = Regex.Matches(bestellungRaw, pattern);
