@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 public static class Transformations {
@@ -21,8 +22,8 @@ public static class Transformations {
         }
 
         return new Kunde(
-            match.Groups[1].Value,
-            match.Groups[2].Value,
+            Vorname = match.Groups[1].Value,
+            Name = match.Groups[2].Value,
             match.Groups[3].Value,
             match.Groups[4].Value,
             match.Groups[5].Value,
@@ -34,10 +35,42 @@ public static class Transformations {
     }
 
     public static class Produkte {
+        public static Produkt ReturnMatchesProdukt(string eintrag) {
+            // Zusammensetzung des Regex-Patterns
+            string pattern = @"^" +
+                @"(.+),"                                          // 1: Name
+                @"(\d+)€," +                                      // 2: Preis
+                @"(\d+)," +                                       // 3: Bestand
+                @"(.+)," +                                        // 4: Beschreibung
+                @"(\d+)";                                         // 5: Artikelnummer
+
+            Match match = Regex.Match(eintrag, pattern);
+
+            if ( !match.Success || match.Groups.Count < 6 ) {
+                throw new ArgumentException("Eintrag konnte nicht geparst werden.");
+            }
+
+            return new Produkt { }
+                Name = match.Groups[1].Value,
+                Verkaufsreis = match.Groups[2].Value,
+                Bestand = match.Groups[3].Value,
+                Beschreibung = match.Groups[4].Value,
+                Artikelnummer match.Groups[5].Value
+            };
 
 
 
+        }
 
-    }
+        public static List<Tuple<string, string>> Bestellung(string bestellungRaw) {
+            List<Tuple<string, string>> ausgabe = new List<Tuple<string, string>>();
+            string pattern = "([\w-]+)()";
+            string patternTMP = "";
+
+            do { 
+
+
+            } while ()
+        }
 }
 
