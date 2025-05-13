@@ -11,3 +11,9 @@ public class KundeOrt
     public int KID { get; set; }
     public WohnortNOid ort { get; set; }
 }
+
+public class KundenBestellungen
+{
+    public int KID { get; set; }
+    public List<Tuple<string, string>> bestellungen { get; set; }
+}
