@@ -21,17 +21,17 @@ public static class Transformations {
             throw new ArgumentException("Eintrag konnte nicht geparst werden.");
         }
 
-        return new Kunde(
+        return new Kunde { 
             Vorname = match.Groups[1].Value,
             Name = match.Groups[2].Value,
-            match.Groups[3].Value,
-            match.Groups[4].Value,
-            match.Groups[5].Value,
-            match.Groups[6].Value,
-            match.Groups[7].Value,
-            match.Groups[8].Value,
-            match.Groups[9].Value
-        );
+            PLZ = match.Groups[3].Value,
+            Ort = match.Groups[4].Value,
+            Strasse = match.Groups[5].Value,
+            Hausnummer = match.Groups[6].Value,
+            Bestellposten = match.Groups[7].Value,
+            E_Mail = match.Groups[8].Value,
+            Passwort = match.Groups[9].Value
+        };
     }
 
     public static class Produkte {
@@ -50,7 +50,7 @@ public static class Transformations {
                 throw new ArgumentException("Eintrag konnte nicht geparst werden.");
             }
 
-            return new Produkt { }
+            return new Produkt { 
                 Name = match.Groups[1].Value,
                 Verkaufsreis = match.Groups[2].Value,
                 Bestand = match.Groups[3].Value,
@@ -64,13 +64,21 @@ public static class Transformations {
 
         public static List<Tuple<string, string>> Bestellung(string bestellungRaw) {
             List<Tuple<string, string>> ausgabe = new List<Tuple<string, string>>();
-            string pattern = "([\w-]+)()";
-            string patternTMP = "";
+            string pattern = "(?<=^|,\s)([\\w-\\s]+?)\\s\\((\\d+)\\)";
+            
+            try {
+                MatchCollection matches = Regex.Matches(bestellungRaw, pattern);
 
-            do { 
+                foreach ( Match m in matches ) {
+                    if ( m.Success ) {
+                        string produkt = m.Groups[1].Value.Trim();
+                        string menge = m.Groups[2].Value.Trim();
+                        ausgabe.Add(Tuple.Create(produkt, menge));
+                    }
+                }
+            } catch ( RegexMatchTimeoutException ) { }
 
-
-            } while ()
+            return ausgabe;
         }
 }
 
