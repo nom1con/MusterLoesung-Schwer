@@ -6,7 +6,7 @@ public static class Database
     {
         using var con = new MySqlConnection("Server=127.0.0.1; Database=MusterloesungSchwer; UID=root");
         con.Open();
-        using var command = new MySqlCommand("INSERT INTO kunden VALUES (@KID, @Vorname, @Nachname, @E_Mail, @Passwort, @OID)", con);
+        using var command = new MySqlCommand("INSERT INTO kunde VALUES (@KID, @Vorname, @Nachname, @E_Mail, @Passwort, @OID)", con);
         foreach (var k in kunden)
         {
             command.Parameters.AddWithValue("@KID", k.KID);

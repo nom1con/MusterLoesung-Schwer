@@ -44,10 +44,10 @@ public static class Transformations
         // Zusammensetzung des Regex-Patterns
         string pattern = @"^" +
             @"(.+)," +                                          // 1: Name
-            @"(\d+)€," +                                      // 2: Preis
-            @"(\d+)," +                                       // 3: Bestand
+            @"([\d\.]+)\€," +                                      // 2: Preis
+            @"([\d\.]+)," +                                       // 3: Bestand
             @"(.+)," +                                        // 4: Beschreibung
-            @"(\d+)";                                         // 5: Artikelnummer
+            @"([\d\.]+)";                                         // 5: Artikelnummer
 
         Match match = Regex.Match(eintrag, pattern);
 
