@@ -69,9 +69,9 @@ public static class Transformations
     }
 
 
-    public static List<Tuple<string, string>> Bestellung(string bestellungRaw)
+    public static List<Tuple<string, int>> Bestellung(string bestellungRaw)
     {
-        List<Tuple<string, string>> ausgabe = [];
+        List<Tuple<string, int>> ausgabe = [];
         string pattern = "(?<=^|,\\s)([\\w-\\s]+?)\\s\\((\\d+)\\)";
 
         try
@@ -84,13 +84,13 @@ public static class Transformations
                 {
                     string produkt = m.Groups[1].Value.Trim();
                     string menge = m.Groups[2].Value.Trim();
-                    ausgabe.Add(Tuple.Create(produkt, menge));
+                    ausgabe.Add(Tuple.Create(produkt, int.Parse(menge)));
                 }
             }
         }
         catch (RegexMatchTimeoutException) { }
 
-        return ausgabe;
+        return [.. ausgabe.GroupBy(b => b.Item1, b => b.Item2, (item, menge) => new { item, menge }).Select(b => Tuple.Create(b.item, b.menge.Sum()))];
     }
 
     public static DBProdukt DBProdukt(int index, Produkt produkt)

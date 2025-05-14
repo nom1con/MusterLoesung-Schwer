@@ -15,5 +15,5 @@ public class KundeOrt
 public class KundenBestellungen
 {
     public int KID { get; set; }
-    public List<Tuple<string, string>> bestellungen { get; set; }
+    public List<Tuple<string, int>> bestellungen { get; set; }
 }

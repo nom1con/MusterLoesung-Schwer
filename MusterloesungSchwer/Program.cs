@@ -18,5 +18,5 @@ Database.StoreProdukte(produkte);
 
 var bestellungenprep = kundenprep.Select(k => new KundenBestellungen { KID = k.First, bestellungen = Transformations.Bestellung(k.Second.Bestellposten) });
 var flatendBestellungen = bestellungenprep.SelectMany(b => b.bestellungen, (k, bestellung) => new { k.KID, bestellung.Item1, bestellung.Item2 });
-var bestellungen = flatendBestellungen.Join(produkte, b => b.Item1, p => p.Name, (b, p) => new DBBestellungen { KID = b.KID, Menge = int.Parse(b.Item2), PID = p.PID });
+var bestellungen = flatendBestellungen.Join(produkte, b => b.Item1, p => p.Name, (b, p) => new DBBestellungen { KID = b.KID, Menge = b.Item2, PID = p.PID });
 Database.StoreBestellungen(bestellungen);
