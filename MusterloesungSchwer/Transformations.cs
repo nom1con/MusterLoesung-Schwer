@@ -8,10 +8,10 @@ public static class Transformations
     {
         // Zusammensetzung des Regex-Patterns
         string pattern = @"^" +
-            @"(.+?)\s+([ßäöüÄÖÜ\w-]+)(?=,)," +         // 1: Vorname, 2: Nachname
-            @"([-ßÄÖÜäöü\w\s]+)\s" +                          // 3: Ort
+            @"(.+?)\s+([\u00c0-\u00ff\w-]+)(?=,)," +         // 1: Vorname, 2: Nachname
+            @"([-\u00c0-\u00ff\w\s]+)\s" +                          // 3: Ort
             @"(\d{5})\s" +                            // 4: PLZ
-            @"([-äöüÄÖÜßa-zA-Z\.\-\s]+)\s" +                    // 5: Straße
+            @"([-\u00c0-\u00ffa-zA-Z\.\-\s]+)\s" +                    // 5: Straße
             @"(\d+)," +                               // 6: Hausnummer
             @"(.+)," +                                // 7: Bestellung
             @"(.+)," +                                // 8: Mail
@@ -21,6 +21,7 @@ public static class Transformations
 
         if (!match.Success || match.Groups.Count < 10)
         {
+            Console.WriteLine(eintrag);
             throw new ArgumentException("Eintrag konnte nicht geparst werden.");
         }
 
@@ -53,6 +54,7 @@ public static class Transformations
 
         if (!match.Success || match.Groups.Count < 6)
         {
+            Console.WriteLine(eintrag);
             throw new ArgumentException("Eintrag konnte nicht geparst werden.");
         }
 
