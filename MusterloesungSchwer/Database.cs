@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using MySqlConnector;
 
 public static class Database
@@ -6,67 +7,88 @@ public static class Database
     {
         using var con = new MySqlConnection("Server=127.0.0.1; Database=MusterloesungSchwer; UID=root");
         con.Open();
-        using var command = new MySqlCommand("INSERT INTO kunde VALUES (@KID, @Vorname, @Nachname, @E_Mail, @Passwort, @OID)", con);
+        using var batch = new MySqlBatch(con);
         foreach (var k in kunden)
         {
-            command.Parameters.AddWithValue("@KID", k.KID);
-            command.Parameters.AddWithValue("@Vorname", k.Vorname);
-            command.Parameters.AddWithValue("@Nachname", k.Nachname);
-            command.Parameters.AddWithValue("@E_Mail", k.E_Mail);
-            command.Parameters.AddWithValue("@Passwort", k.Passwort);
-            command.Parameters.AddWithValue("@OID", k.OID);
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
+            batch.BatchCommands.Add(new MySqlBatchCommand("INSERT INTO kunde VALUES (@KID, @Vorname, @Nachname, @E_Mail, @Passwort, @OID)")
+            {
+                Parameters =
+                {
+                    new MySqlParameter("@KID", k.KID),
+                    new MySqlParameter("@Vorname", k.Vorname),
+                    new MySqlParameter("@Nachname", k.Nachname),
+                    new MySqlParameter("@E_Mail", k.E_Mail),
+                    new MySqlParameter("@Passwort", k.Passwort),
+                    new MySqlParameter("@OID", k.OID)
+                }
+            });
         }
+        batch.ExecuteNonQuery();
     }
 
     public static void StoreOrte(IEnumerable<DBWohnort> orte)
     {
         using var con = new MySqlConnection("Server=127.0.0.1; Database=MusterloesungSchwer; UID=root");
         con.Open();
-        using var command = new MySqlCommand("INSERT INTO wohnort VALUES (@OID, @Ort, @PLZ, @Strasse, @Hausnummer)", con);
+        using var batch = new MySqlBatch(con);
         foreach (var o in orte)
         {
-            command.Parameters.AddWithValue("@OID", o.OID);
-            command.Parameters.AddWithValue("@Ort", o.Ort);
-            command.Parameters.AddWithValue("@PLZ", o.PLZ);
-            command.Parameters.AddWithValue("@Strasse", o.Strasse);
-            command.Parameters.AddWithValue("@Hausnummer", o.Hausnummer);
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
+            batch.BatchCommands.Add(new MySqlBatchCommand("INSERT INTO wohnort VALUES (@OID, @Ort, @PLZ, @Strasse, @Hausnummer)")
+            {
+                Parameters = 
+                {
+                    new MySqlParameter("@OID", o.OID),
+                    new MySqlParameter("@Ort", o.Ort),
+                    new MySqlParameter("@PLZ", o.PLZ),
+                    new MySqlParameter("@Strasse", o.Strasse),
+                    new MySqlParameter("@Hausnummer", o.Hausnummer)
+                }
+            });
         }
+        batch.ExecuteNonQuery();
     }
 
     public static void StoreProdukte(IEnumerable<DBProdukt> produkte)
     {
         using var con = new MySqlConnection("Server=127.0.0.1; Database=MusterloesungSchwer; UID=root");
         con.Open();
-        using var command = new MySqlCommand("INSERT INTO produkte VALUES (@PID, @Name, @Verkaufspreis, @Bestand, @Beschreibung, @Artikelnummer)", con);
+        using var batch = new MySqlBatch(con);
         foreach (var p in produkte)
         {
-            command.Parameters.AddWithValue("@PID", p.PID);
-            command.Parameters.AddWithValue("@Name", p.Name);
-            command.Parameters.AddWithValue("@Verkaufspreis", p.Verkaufspreis);
-            command.Parameters.AddWithValue("@Bestand", p.Bestand);
-            command.Parameters.AddWithValue("@Beschreibung", p.Beschreibung);
-            command.Parameters.AddWithValue("@Artikelnummer", p.Artikelnummer);
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
+            batch.BatchCommands.Add(new MySqlBatchCommand("INSERT INTO produkte VALUES (@PID, @Name, @Verkaufspreis, @Bestand, @Beschreibung, @Artikelnummer)")
+            {
+                Parameters =
+                {
+                    new MySqlParameter("@PID", p.PID),
+                    new MySqlParameter("@Name", p.Name),
+                    new MySqlParameter("@Verkaufspreis", p.Verkaufspreis),
+                    new MySqlParameter("@Bestand", p.Bestand),
+                    new MySqlParameter("@Beschreibung", p.Beschreibung),
+                    new MySqlParameter("@Artikelnummer", p.Artikelnummer)
+                }
+            });
         }
+        batch.ExecuteNonQuery();
     }
 
     public static void StoreBestellungen(IEnumerable<DBBestellungen> bestellungen)
     {
         using var con = new MySqlConnection("Server=127.0.0.1; Database=MusterloesungSchwer; UID=root");
         con.Open();
+        using var batch = new MySqlBatch(con);
         using var command = new MySqlCommand("INSERT INTO bestellungen VALUES (@PID, @KID, @Menge)", con);
         foreach (var b in bestellungen)
         {
-            command.Parameters.AddWithValue("@PID", b.PID);
-            command.Parameters.AddWithValue("@KID", b.KID);
-            command.Parameters.AddWithValue("@Menge", b.Menge);
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
+            batch.BatchCommands.Add(new MySqlBatchCommand("INSERT INTO produkte VALUES (@PID, @Name, @Verkaufspreis, @Bestand, @Beschreibung, @Artikelnummer)")
+            {
+                Parameters = 
+                {
+                    new MySqlParameter("@PID", b.PID),
+                    new MySqlParameter("@KID", b.KID),
+                    new MySqlParameter("@Menge", b.Menge)
+                }
+            });
         }
+        batch.ExecuteNonQuery();
     }
 }
