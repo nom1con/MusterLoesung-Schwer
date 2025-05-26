@@ -1,19 +1,9 @@
-public record WohnortNOid
-{
-    public string Ort { get; set; }
-    public string PLZ { get; set; }
-    public string Strasse { get; set; }
-    public string Hausnummer { get; set; }
-}
+public record OrtNoID(string Ortname, string PLZ);
 
-public class KundeOrt
-{
-    public int KID { get; set; }
-    public WohnortNOid ort { get; set; }
-}
+public record AdresseOrt(int AdresseID, OrtNoID Ort);
 
-public class KundenBestellungen
-{
-    public int KID { get; set; }
-    public List<Tuple<string, int>> bestellungen { get; set; }
-}
+public record AdresseNoID(string Strasse, string Hausnummer, OrtNoID Ort);
+
+public record KundeAdresse(int KundenID, AdresseNoID Adresse);
+
+public record KundenBestellungen(int KundenID, List<Tuple<string, int>> Bestellungen);

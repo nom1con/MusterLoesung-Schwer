@@ -95,20 +95,6 @@ public static class Transformations
         return [.. ausgabe.GroupBy(b => b.Item1, b => b.Item2, (item, menge) => new { item, menge }).Select(b => Tuple.Create(b.item, b.menge.Sum()))];
     }
 
-    public static DBProdukt DBProdukt(int index, Produkt produkt)
-    {
-        int menge = int.Parse(produkt.Bestand);
-        var split = produkt.Verkaufspreis.Split('.');
-        int preis = int.Parse(split[0] + split[1]);
-        return new DBProdukt
-        {
-            PID = index,
-            Artikelnummer = produkt.Artikelnummer,
-            Beschreibung = produkt.Beschreibung,
-            Bestand = menge,
-            Name = produkt.Name,
-            Verkaufspreis = preis
-        };
-    }
+   
 }
 
